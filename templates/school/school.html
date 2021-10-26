@@ -1,0 +1,31 @@
+{% extends 'partials/base.html' %}
+
+
+{% block content %}
+
+<div class="container">
+    <div class="row mt-5">
+
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input class="btn btn-info" type="submit" value="save">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            {% for school in schools %}
+
+                <li>{{ school.name }}</li>
+
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
