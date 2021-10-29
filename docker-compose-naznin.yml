@@ -1,0 +1,124 @@
+version: '2'
+ services:
+
+  web:
+
+    build:
+
+      context: ../
+
+      dockerfile: sample_project/Dockerfile
+
+    container_name: sample_project
+
+    volumes:
+
+      - '../:/src'
+
+    environment:
+
+      - LC_ALL=ja_JP.UTF-8
+
+    ports:
+
+      - '8000:8000'
+
+    depends_on:
+
+      - db1
+
+      - db2
+
+      - redis
+
+    entrypoint: sample_project/wait-for-it.sh db1 user user
+
+    command: python3 sample_project/manage.py runserver 0.0.0.0:8000 --settings=config.settings
+
+    tty: true
+
+  redis:
+
+    image: 'redis:4.0.8'
+
+    restart: always
+
+    ports:
+
+      - "6379:6379"
+
+    volumes:
+
+      - './redisdata:/data'
+
+
+
+  db1:
+
+    image: mariadb:latest
+
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+
+    environment:
+
+      - MYSQL_ROOT_USER=root
+
+      - MYSQL_ROOT_PASSWORD=root
+
+      - MYSQL_DATABASE=sample_project_1
+
+      - MYSQL_USER=user
+
+      - MYSQL_PASSWORD=user
+
+    volumes:
+
+      - db1_data:/var/lib/mysql
+
+      - ./db1_data:/docker-entrypoint-initdb.d
+
+    ports:
+
+      - '3307:3306'
+
+
+
+  db2:
+
+    image: mariadb:latest
+
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+
+    environment:
+
+      - MYSQL_ROOT_USER=root
+
+      - MYSQL_ROOT_PASSWORD=root
+
+      - MYSQL_DATABASE=sample_project_2
+
+      - MYSQL_USER=user
+
+      - MYSQL_PASSWORD=user
+
+    volumes:
+
+      - db2_data:/var/lib/mysql
+
+      - ./db2_data:/docker-entrypoint-initdb.d
+
+    ports:
+
+      - '3308:3306'
+
+
+
+volumes:
+
+  db1_data:
+
+    driver: local
+
+  db2_data:
+
+    driver: local

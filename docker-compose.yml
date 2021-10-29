@@ -1,0 +1,63 @@
+version: "3.8"
+   
+services:
+    web:
+        build: .
+        container_name: web_container
+        command: python manage.py runserver
+        volumes:
+            - .:/usr/src/app
+        # ports:
+        #     - "8000:8000"
+        environment:
+        - SQL_ENGINE=django.db.backends.postgresql
+        # - SQL_DATABASE=auth
+        - SQL_USER=postgres
+        - SQL_PASSWORD=123
+        - SQL_HOST=auth_db
+        # - SQL_PORT=5432
+        - DATABASE=postgres
+        depends_on:
+            - auth_db
+            - school_db
+            # - club_db
+
+    auth_db:
+        image: postgres:13.0-alpine
+        volumes:
+          - auth_data:/var/lib/postgresql/data1/
+        environment:
+        - POSTGRES_DB=auth
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=123
+        ports:
+        - "8000:8000"
+    
+    school_db:
+        image: postgres:13.0-alpine
+        volumes:
+          - school_data:/var/lib/postgresql/data2/
+        environment:
+        - POSTGRES_DB=school
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=123
+        ports:
+        - "8001:8088"
+
+    # club_db:
+    #     image: postgres:13.0-alpine
+    #     volumes:
+    #       - club_data:/var/lib/postgresql/data3/
+    #     environment:
+    #     - POSTGRES_DB=club
+    #     - POSTGRES_USER=postgres
+    #     - POSTGRES_PASSWORD=123
+    #     ports:
+    #     - '3309:5434'
+
+volumes:
+  auth_data:
+  school_data:
+  # club_data:
+
+    
