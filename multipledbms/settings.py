@@ -78,15 +78,19 @@ WSGI_APPLICATION = 'multipledbms.wsgi.application'
 
 DATABASES = {
     'default': {
-        
-    },
-    'auth_db': {
-        'NAME': 'auth',
+        'NAME': 'default',
         'ENGINE': 'django.db.backends.postgresql',
         'USER': 'postgres',
         'PASSWORD': '123',  
-        'PORT': 5432
+        'PORT': 5432 
     },
+    # 'auth_db': {
+    #     'NAME': 'auth',
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'USER': 'postgres',
+    #     'PASSWORD': '123',  
+    #     'PORT': 5432
+    # },
     'school_db': {
         'NAME': 'school',
         'ENGINE': 'django.db.backends.postgresql',
@@ -146,9 +150,9 @@ STATIC_URL = '/static/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
-# DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-DATABASE_ROUTERS = ['routers.db_routers.AuthRouter',
+DATABASE_ROUTERS = ['routers.db_routers.DefaultRouter',
                     'routers.db_routers.SchoolRouter',
                     'routers.db_routers.ClubRouter'
                 ]
