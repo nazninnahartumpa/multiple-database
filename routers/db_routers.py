@@ -1,4 +1,4 @@
-class DefaultRouter:
+class AuthRouter:
     """
     A router to control all database operations on models in the
     auth and contenttypes applications.
@@ -10,7 +10,7 @@ class DefaultRouter:
         Attempts to read auth and contenttypes models go to auth_db.
         """
         if model._meta.app_label in self.route_app_labels:
-            return 'default'
+            return 'auth_db'
         return None
 
     def db_for_write(self, model, **hints):
@@ -18,7 +18,7 @@ class DefaultRouter:
         Attempts to write auth and contenttypes models go to auth_db.
         """
         if model._meta.app_label in self.route_app_labels:
-            return 'default'
+            return 'auth_db'
         return None
 
     def allow_relation(self, obj1, obj2, **hints):
@@ -39,7 +39,7 @@ class DefaultRouter:
         'auth_db' database.
         """
         if app_label in self.route_app_labels:
-            return db == 'default'
+            return db == 'auth_db'
         return None
 
 

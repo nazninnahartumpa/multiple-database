@@ -4,13 +4,13 @@ services:
     web:
         build: .
         container_name: web_container
-        command: python manage.py runserver
+        command: python manage.py runserver 0.0.0.0:8000
         volumes:
             - .:/usr/src/app
-        # ports:
-        #     - "8000:8000"
+        ports:
+            - "8000:8000"
         environment:
-        - SQL_ENGINE=django.db.backends.postgresql
+        - SQL_ENGINE=django.db.backends.postgresql_psycopg2
         # - SQL_DATABASE=auth
         - SQL_USER=postgres
         - SQL_PASSWORD=123
@@ -31,7 +31,7 @@ services:
         - POSTGRES_USER=postgres
         - POSTGRES_PASSWORD=123
         ports:
-        - "8000:8000"
+        - "5432:5432"
     
     school_db:
         image: postgres:13.0-alpine
@@ -42,7 +42,7 @@ services:
         - POSTGRES_USER=postgres
         - POSTGRES_PASSWORD=123
         ports:
-        - "8001:8088"
+        - "5433:5432"
 
     # club_db:
     #     image: postgres:13.0-alpine

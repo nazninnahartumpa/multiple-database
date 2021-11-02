@@ -77,34 +77,31 @@ WSGI_APPLICATION = 'multipledbms.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'NAME': 'default',
-        'ENGINE': 'django.db.backends.postgresql',
+    'default': {},
+    'auth_db': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'auth',
         'USER': 'postgres',
-        'PASSWORD': '123',  
-        'PORT': 5432 
+        'PASSWORD': '123',
+        'HOST': 'auth_db',  # <-- IMPORTANT: same name as docker-compose service!
+        'PORT': '5432',
     },
-    # 'auth_db': {
-    #     'NAME': 'auth',
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'USER': 'postgres',
-    #     'PASSWORD': '123',  
-    #     'PORT': 5432
-    # },
     'school_db': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'school',
-        'ENGINE': 'django.db.backends.postgresql',
         'USER': 'postgres',
-        'PASSWORD': '123',  
-        'PORT': 5432
+        'PASSWORD': '123',
+        'HOST': 'school_db',  # <-- IMPORTANT: same name as docker-compose service!
+        'PORT': '5432',
     },
-    'club_db': {
-        'NAME': 'club',
-        'ENGINE': 'django.db.backends.postgresql',
-        'USER': 'postgres',
-        'PASSWORD': '123',  
-        'PORT': 5432
-    }
+    # 'club_db': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': 'auth',
+    #     'USER': 'postgres',
+    #     'PASSWORD': '123',
+    #     'HOST': 'auth_db',  # <-- IMPORTANT: same name as docker-compose service!
+    #     'PORT': '5432',
+    # }
 
 }
 
@@ -152,7 +149,7 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-DATABASE_ROUTERS = ['routers.db_routers.DefaultRouter',
+DATABASE_ROUTERS = ['routers.db_routers.AuthRouter',
                     'routers.db_routers.SchoolRouter',
                     'routers.db_routers.ClubRouter'
                 ]
